@@ -27,7 +27,7 @@ public class Interactor : MonoBehaviour
 
         if (currentTarget != lastTarget && currentTarget != null)
         {
-            Debug.Log($"[{currentTarget.ActionDisplay}] {gameObject.name}");
+            Debug.Log($"[{currentTarget.ActionDisplay}] {currentTarget.gameObject.name}");
         }
 
         lastTarget = currentTarget;
