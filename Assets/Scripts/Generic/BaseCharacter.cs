@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Assets.Scripts
+namespace Generic
 {
     public class BaseCharacter : MonoBehaviour
     {
@@ -18,6 +18,7 @@ namespace Assets.Scripts
 	
         // Update is called once per frame
         void Update () {
+            //TODO: Remove when not needing this for testing anymore
             if (Input.GetKeyDown(KeyCode.UpArrow)) Heal(1f);
             if (Input.GetKeyDown(KeyCode.DownArrow)) TakeDamage(1f);
         }
