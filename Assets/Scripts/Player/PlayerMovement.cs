@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using AI;
 using Enums;
 using Generic;
 using UnityEngine;
@@ -8,7 +9,7 @@ namespace Player
     public class PlayerMovement : BaseCharacter
     {
         [SerializeField] private MovementConfig _movementConfig;
-        
+
         [SerializeField] private Rigidbody2D _rigidbody;
 
         private MovementMode _movementMode = MovementMode.Walk;
@@ -48,6 +49,8 @@ namespace Player
             _velocity.y = VelocityForAxis("Vertical", _velocity.y);
 
             _rigidbody.velocity = _velocity;
+
+            MakeNoise();
         }
 
         private float VelocityForAxis(string axis, float currentVelocity)
@@ -55,7 +58,7 @@ namespace Player
             var currentSetting = _movementConfig.GetMovementSetting(_movementMode);
 
             var movement = Input.GetAxisRaw(axis) * currentSetting.Acceleration;
-            
+
             currentVelocity = Mathf.Clamp(currentVelocity + movement, -currentSetting.MaxSpeed, currentSetting.MaxSpeed);
 
             if (currentVelocity > 0.0f && currentVelocity > currentSetting.Friction)
@@ -72,6 +75,20 @@ namespace Player
             }
 
             return currentVelocity;
+        }
+
+        private void MakeNoise()
+        {
+            var currentSetting = _movementConfig.GetMovementSetting(_movementMode);
+
+            var hits = Physics2D.CircleCastAll(transform.position, currentSetting.NoiseLevel, Vector2.up);
+
+            foreach (var hit in hits)
+            {
+                var enemy = hit.collider.gameObject.GetComponent<IAIInteractor>();
+
+                enemy?.ReceiveAudio(hit.distance / currentSetting.NoiseLevel);
+            }
         }
     }
 }
