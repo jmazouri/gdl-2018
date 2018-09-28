@@ -1,4 +1,4 @@
-﻿namespace Assets.Scripts.AI
+﻿namespace AI
 {
     public interface IAIInteractor
     {
