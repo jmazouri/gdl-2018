@@ -1,6 +1,6 @@
 ﻿namespace Enums
 {
-    internal enum MovementMode
+    public enum MovementMode
     {
         Sneak,
         Walk,

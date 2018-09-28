@@ -240,11 +240,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbc1ce02e9510d94883f55fb5d84871a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxWalkingSpeed: 2
-  _maxRunningSpeed: 5
-  _maxSneakingSpeed: 1
-  _acceleration: 0.3
-  _friction: 0.2
+  _movementConfig: {fileID: 11400000, guid: 2d6128b6d0be1e44cb411981caffd2cb, type: 2}
   _rigidbody: {fileID: 816792255}
 --- !u!212 &816792257
 SpriteRenderer:
