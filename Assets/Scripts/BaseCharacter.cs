@@ -28,6 +28,7 @@ namespace Assets.Scripts
         /// <param name="damage">the amount of damage taken</param>
         public void TakeDamage(float damage)
         {
+            Debug.Log($"{gameObject.name}: Taking {damage} damage");
             AdjustHitpoints(Mathf.Abs(damage) * -1);
         }
 
@@ -37,15 +38,16 @@ namespace Assets.Scripts
         /// <param name="health">the amount of health healed</param>
         public void Heal(float health)
         {
+            Debug.Log($"{gameObject.name}: Healing for {health} hitpoints");
             AdjustHitpoints(Mathf.Abs(health));
         }
     
         private void AdjustHitpoints(float damage)
         {
-            Debug.Log($"Adjusting hitpoints by {damage} points");
             _hitPoints += damage;
-            Debug.Log($"Hitpoints {_hitPoints} left");
+
             if (_hitPoints <= 0.0f) Die();
+            else Debug.Log($"{gameObject.name}: Hitpoints {_hitPoints} left");
         }
 
         /// <summary>
@@ -53,8 +55,8 @@ namespace Assets.Scripts
         /// </summary>
         public virtual void Die()
         {
-            Debug.Log("Dying!");
-            Destroy(this);
+            Debug.Log($"{gameObject.name}: Dying!");
+            Destroy(gameObject);
         }
     }
 }
