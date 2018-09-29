@@ -28,7 +28,7 @@ namespace Generic
         /// Lets the character take damage and decide if it needs to die
         /// </summary>
         /// <param name="damage">the amount of damage taken</param>
-        public void TakeDamage(float damage)
+        public virtual void TakeDamage(float damage)
         {
             Debug.Log($"{gameObject.name}: Taking {damage} damage");
             AdjustHitpoints(Mathf.Abs(damage) * -1);
