@@ -38,6 +38,16 @@ public class InteractionTarget : MonoBehaviour
         Debug.Log("Someone interacted with me! :DDD", gameObject);
     }
 
+    public virtual void ExitRange(Interactor interactor)
+    {
+
+    }
+
+    public virtual void EnterRange(Interactor interactor)
+    {
+
+    }
+
     public virtual void InternalUpdate() { }
     public virtual void InternalStart() { }
 }

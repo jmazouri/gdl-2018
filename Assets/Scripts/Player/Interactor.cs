@@ -33,7 +33,9 @@ public class Interactor : MonoBehaviour
             if (currentTarget != null)
             {
                 Debug.Log($"[{currentTarget.ActionDisplay}] {currentTarget.gameObject.name}");
+
                 currentTarget.ActionDisplayChanged += ActionDisplayChanged;
+                currentTarget.EnterRange(this);
             }
             else
             {
@@ -41,6 +43,7 @@ public class Interactor : MonoBehaviour
 
                 if (lastTarget != null)
                 {
+                    lastTarget.ExitRange(this);
                     lastTarget.ActionDisplayChanged -= ActionDisplayChanged;
                 }
             }

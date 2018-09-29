@@ -26,6 +26,11 @@ public class InteractableSign : InteractionTarget
         textPopup.GetComponentInChildren<TextMeshPro>().SetText(message);
     }
 
+    public override void ExitRange(Interactor interactor)
+    {
+        isShown = false;
+    }
+
     public override void InternalUpdate()
     {
         Vector3 targetScale = isShown ? new Vector3(1, 1, 1) : Vector3.zero;
