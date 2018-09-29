@@ -45,6 +45,7 @@ namespace AI
 		{
 			if (Vector3.Distance(_sight.LastSeen, transform.position) < 1)
 			{
+				_aiController.LookAt2D(_sight.AbsolutePlayerPosition);
 				_aiController.Attack(_sight.LastSeen);
 			}
 			else

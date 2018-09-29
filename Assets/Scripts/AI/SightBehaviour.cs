@@ -9,6 +9,8 @@ namespace AI
         [SerializeField] private float _fovAngle = 110;
         [SerializeField] private bool _playerInSight;
         public Vector3 LastSeen { get; set; }
+        public Vector3 AbsolutePlayerPosition => _player.transform.position;
+
         public event EventHandler<PlayerSeenEventArgs> PlayerSeen;
 
         // Update is called once per frame

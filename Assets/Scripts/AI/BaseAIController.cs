@@ -66,11 +66,7 @@ namespace AI
                 }
             }
 
-            Vector3 diff = Route.First() - transform.position;
-            diff.Normalize();
-
-            float rotationValue = Mathf.Atan2(diff.y, diff.x) * Mathf.Rad2Deg;
-            transform.rotation = Quaternion.Euler(0f, 0f, rotationValue - 90);
+            LookAt2D(Route.First());
             var finalSpeed = 0f;
             switch (CurrentState)
             {
@@ -86,6 +82,15 @@ namespace AI
             }
 
             transform.Translate(Vector3.up * finalSpeed * Time.deltaTime);
+        }
+
+        public void LookAt2D(Vector3 target)
+        {
+            Vector3 diff = target - transform.position;
+            diff.Normalize();
+
+            float rotationValue = Mathf.Atan2(diff.y, diff.x) * Mathf.Rad2Deg;
+            transform.rotation = Quaternion.Euler(0f, 0f, rotationValue - 90);
         }
 
         public void AssignDestination(Vector3 destination, AIState newState = AIState.Patrolling)
