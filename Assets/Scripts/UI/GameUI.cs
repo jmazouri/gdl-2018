@@ -43,6 +43,9 @@ public class GameUI : MonoBehaviour
     private Image _secondaryWeaponSprite;
 
     [SerializeField]
+    private Image _weaponSelector;
+
+    [SerializeField]
     private Text _ammoCount;
 
     [SerializeField]
@@ -70,7 +73,7 @@ public class GameUI : MonoBehaviour
         _player.Deadened += OnPlayerDeath;
 
         _ammoCount.text = _attackBehaviour.Ammo.ToString();
-        if (!_attackBehaviour.IsUsingCrossbow) HideAmmo();
+        _ammoCount.CrossFadeAlpha(_attackBehaviour.IsUsingCrossbow ? 1 : 0, 0, true);
         _attackBehaviour.AmmoChanged += OnAmmoChanged;
         _attackBehaviour.WeaponSwapped += OnWeaponSwapped;
     }
@@ -83,8 +86,16 @@ public class GameUI : MonoBehaviour
 
     private void OnWeaponSwapped(bool isCrossbow)
     {
-        if (isCrossbow) ShowAmmo();
-        else HideAmmo();
+        if (isCrossbow)
+        {
+            _weaponSelector.rectTransform.position = _secondaryWeaponSprite.rectTransform.position;
+            ShowAmmo();
+        }
+        else
+        {
+            _weaponSelector.rectTransform.position = _primaryWeaponSprite.rectTransform.position;
+            HideAmmo();
+        }
     }
 
     private void OnAmmoChanged(int count)
@@ -110,11 +121,11 @@ public class GameUI : MonoBehaviour
 
     private void ShowAmmo()
     {
-        _ammoCount.CrossFadeAlpha(1, 0.1f, false);
+        _ammoCount.CrossFadeAlpha(1, 0.1f, true);
     }
 
     private void HideAmmo()
     {
-        _ammoCount.CrossFadeAlpha(0, 0.1f, false);
+        _ammoCount.CrossFadeAlpha(0, 0.1f, true);
     }
 }
