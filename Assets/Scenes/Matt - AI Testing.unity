@@ -468,6 +468,7 @@ MonoBehaviour:
   _patrolSpeed: 2
   _investigationSpeed: 5
   _chaseSpeed: 10
+  _damage: 1
 --- !u!212 &1543473402
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -553,6 +554,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _detectionStrength: 4
+  _investigationTileTime: 5
+  _attackCooldown: 1
 --- !u!1 &1574614161
 GameObject:
   m_ObjectHideFlags: 0

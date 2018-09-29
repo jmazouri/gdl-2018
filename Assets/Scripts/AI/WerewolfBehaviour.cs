@@ -11,6 +11,8 @@ namespace AI
 	{
 		[SerializeField] private float _detectionStrength = 4;
 		[SerializeField] private float _investigationTileTime = 5;
+		[SerializeField] private float _attackCooldown = 1;
+		private float _timeSinceLastAttack;
 		private BaseAIController _aiController;
 		private SightBehaviour _sight;
 		private Coroutine _investigateRoutine;
@@ -36,8 +38,20 @@ namespace AI
 
 		private void OnDoneChasing(object sender, EventArgs e)
 		{
-			_aiController.CurrentState = AIState.Investigating;
-			_investigateRoutine = StartCoroutine(CycleLocalArea(transform.position, _investigationTileTime));
+			HandleAttack();
+		}
+
+		private void HandleAttack()
+		{
+			if (Vector3.Distance(_sight.LastSeen, transform.position) < 1)
+			{
+				_aiController.Attack(_sight.LastSeen);
+			}
+			else
+			{
+				_aiController.CurrentState = AIState.Investigating;
+				_investigateRoutine = StartCoroutine(CycleLocalArea(transform.position, _investigationTileTime));
+			}
 		}
 
 		private IEnumerator CycleLocalArea(Vector3 location, float investigationTileTime)
@@ -74,6 +88,23 @@ namespace AI
 			}
 			_investigateRoutine = StartCoroutine(CycleLocalArea(sourcePosition, _investigationTileTime));
 			_aiController.AssignDestination(sourcePosition, AIState.Investigating);
+		}
+
+		void Update()
+		{
+			if (_aiController.CurrentState == AIState.Attacking && _timeSinceLastAttack >= _attackCooldown)
+			{
+				HandleAttack();
+				_timeSinceLastAttack = 0;
+			}
+			else if(_aiController.CurrentState == AIState.Attacking)
+			{
+				_timeSinceLastAttack += Time.deltaTime;
+			}
+			else if(_timeSinceLastAttack > 0)
+			{
+				_timeSinceLastAttack = 0;
+			}
 		}
 	}
 }

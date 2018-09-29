@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Enums;
 using Generic;
+using Player;
 using UnityEngine;
 
 namespace AI
@@ -14,6 +15,7 @@ namespace AI
         [SerializeField] private float _patrolSpeed;
         [SerializeField] private float _investigationSpeed;
         [SerializeField] private float _chaseSpeed;
+        [SerializeField] private float _damage;
         private int _index;
         public List<Vector3> Route { get; set; }
         public AIState CurrentState { get; set; }
@@ -23,13 +25,12 @@ namespace AI
         void Start()
         {
             StartPatrol();
-
         }
 
         void Update()
         {
-            if (CurrentState == AIState.Dead) return;
-            
+            if (CurrentState == AIState.Dead || CurrentState == AIState.Attacking) return;
+
             if (Route == null || Route.Count == 0)
             {
                 return;
@@ -44,6 +45,7 @@ namespace AI
                     IsDoneChasing?.Invoke(this, EventArgs.Empty);
                     return;
                 }
+
                 if (CurrentState == AIState.Patrolling && (Route == null || Route.Count == 0))
                 {
                     _index++;
@@ -51,10 +53,11 @@ namespace AI
                     {
                         _index = 0;
                     }
+
                     AssignDestination(_patrolRoute[_index].position);
                     return; //todo: jank
                 }
-                
+
 
                 if (Route == null || Route.Count == 0)
                 {
@@ -71,16 +74,17 @@ namespace AI
             var finalSpeed = 0f;
             switch (CurrentState)
             {
-                    case AIState.Patrolling:
-                        finalSpeed = _patrolSpeed;
-                        break;
-                    case AIState.Investigating:
-                        finalSpeed = _investigationSpeed;
-                        break;
-                    case AIState.Chasing:
-                        finalSpeed = _chaseSpeed;
-                        break; 
+                case AIState.Patrolling:
+                    finalSpeed = _patrolSpeed;
+                    break;
+                case AIState.Investigating:
+                    finalSpeed = _investigationSpeed;
+                    break;
+                case AIState.Chasing:
+                    finalSpeed = _chaseSpeed;
+                    break;
             }
+
             transform.Translate(Vector3.up * finalSpeed * Time.deltaTime);
         }
 
@@ -97,7 +101,8 @@ namespace AI
         {
             var adjacentPoints = _navController.GetAdjacentNodePoints(_navController.GetPseudoPosition(location).Value)
                 .Where(x => _navController.PseudoGrid[x.x, x.y].HasValue).ToList();
-            var pointsSet = adjacentPoints.SelectMany(x => _navController.GetAdjacentNodePoints(x)).Where(x => _navController.PseudoGrid[x.x, x.y].HasValue).ToList();
+            var pointsSet = adjacentPoints.SelectMany(x => _navController.GetAdjacentNodePoints(x))
+                .Where(x => _navController.PseudoGrid[x.x, x.y].HasValue).ToList();
             pointsSet = pointsSet.Except(adjacentPoints).Distinct().ToList();
             return pointsSet;
         }
@@ -129,6 +134,17 @@ namespace AI
         {
             base.Die();
             CurrentState = AIState.Dead;
+        }
+
+        public void Attack(Vector3 sightLastSeen)
+        {
+            CurrentState = AIState.Attacking;
+            var player = Physics2D.OverlapCircleAll(transform.position, 0.5f)
+                .FirstOrDefault(x => x.gameObject.GetComponent<PlayerController>() != null);
+            
+            if (player == null) return;
+            
+            player.GetComponent<PlayerController>().TakeDamage(_damage);
         }
     }
 }
