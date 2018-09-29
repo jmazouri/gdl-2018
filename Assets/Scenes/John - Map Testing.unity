@@ -445,11 +445,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   smoothness: 8
---- !u!1 &1602738688 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1232188391684398, guid: 85265662f27534e4d893cc682e7e3d60,
-    type: 2}
-  m_PrefabInternal: {fileID: 2093022104}
 --- !u!1 &1838307320
 GameObject:
   m_ObjectHideFlags: 0
@@ -3563,41 +3558,12 @@ Prefab:
     - target: {fileID: 114488664076455214, guid: 85265662f27534e4d893cc682e7e3d60,
         type: 2}
       propertyPath: m_havePropertiesChanged
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114488664076455214, guid: 85265662f27534e4d893cc682e7e3d60,
         type: 2}
       propertyPath: m_isInputParsingRequired
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1232188391684398, guid: 85265662f27534e4d893cc682e7e3d60, type: 2}
-      propertyPath: m_IsActive
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114667516565144708, guid: 85265662f27534e4d893cc682e7e3d60,
-        type: 2}
-      propertyPath: _useText
-      value: 
-      objectReference: {fileID: 1602738688}
-    - target: {fileID: 224079388065355208, guid: 85265662f27534e4d893cc682e7e3d60,
-        type: 2}
-      propertyPath: m_AnchoredPosition.x
-      value: 1040.5005
-      objectReference: {fileID: 0}
-    - target: {fileID: 224079388065355208, guid: 85265662f27534e4d893cc682e7e3d60,
-        type: 2}
-      propertyPath: m_Pivot.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224079388065355208, guid: 85265662f27534e4d893cc682e7e3d60,
-        type: 2}
-      propertyPath: m_AnchoredPosition.y
-      value: -533.7
-      objectReference: {fileID: 0}
-    - target: {fileID: 224079388065355208, guid: 85265662f27534e4d893cc682e7e3d60,
-        type: 2}
-      propertyPath: m_Pivot.y
-      value: 0.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 85265662f27534e4d893cc682e7e3d60, type: 2}
