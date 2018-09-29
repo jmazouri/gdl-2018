@@ -6,6 +6,7 @@ namespace Player
     {
         [SerializeField] private GameObject _arrowPrefab;
         [SerializeField] private int _ammo = 10;
+        [SerializeField] private bool _isUsingCrossbow;
 
         // Use this for initialization
         void Start()
@@ -17,11 +18,12 @@ namespace Player
         void Update()
         {
             if (Input.GetKeyDown(KeyCode.Space)) DoAttack();
+            if (Input.GetKeyDown(KeyCode.Q)) _isUsingCrossbow = !_isUsingCrossbow;
         }
 
         private void DoAttack()
         {
-            if (_ammo > 0)
+            if (_isUsingCrossbow && _ammo > 0)
             {
                 Debug.DrawRay(transform.position, transform.right, Color.green, 1);
                 Debug.Log("I shot");
