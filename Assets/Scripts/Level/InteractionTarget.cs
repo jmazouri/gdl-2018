@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,6 +8,8 @@ public class InteractionTarget : MonoBehaviour
 {
     [SerializeField]
     private string ActionName;
+
+    public Action<string> ActionDisplayChanged;
 
     //Implement this to override the action display name
     public virtual string ActionDisplay

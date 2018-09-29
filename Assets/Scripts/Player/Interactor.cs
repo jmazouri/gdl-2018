@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,6 +9,8 @@ public class Interactor : MonoBehaviour
     private float interactionRange;
     [SerializeField]
     private LayerMask interactables;
+
+    public Action<InteractionTarget> InteractionTargetChanged;
 
     private InteractionTarget lastTarget;
     private InteractionTarget currentTarget;
@@ -25,12 +28,32 @@ public class Interactor : MonoBehaviour
         
         currentTarget = hit.collider?.GetComponent<InteractionTarget>();
 
-        if (currentTarget != lastTarget && currentTarget != null)
+        if (currentTarget != lastTarget)
         {
-            Debug.Log($"[{currentTarget.ActionDisplay}] {currentTarget.gameObject.name}");
+            if (currentTarget != null)
+            {
+                Debug.Log($"[{currentTarget.ActionDisplay}] {currentTarget.gameObject.name}");
+                currentTarget.ActionDisplayChanged += ActionDisplayChanged;
+            }
+            else
+            {
+                Debug.Log($"Moved out of interaction range.");
+
+                if (lastTarget != null)
+                {
+                    lastTarget.ActionDisplayChanged -= ActionDisplayChanged;
+                }
+            }
+
+            InteractionTargetChanged?.Invoke(currentTarget);
         }
 
         lastTarget = currentTarget;
+    }
+
+    void ActionDisplayChanged(string message)
+    {
+        InteractionTargetChanged?.Invoke(currentTarget);
     }
 
     // Update is called once per frame

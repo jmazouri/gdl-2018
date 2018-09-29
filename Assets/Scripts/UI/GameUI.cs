@@ -1,6 +1,7 @@
 ﻿using Enums;
 using Player;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -51,6 +52,12 @@ public class GameUI : MonoBehaviour
     [SerializeField]
     private Text _scoreText;
 
+    [SerializeField]
+    private GameObject _useText;
+
+    private TextMeshProUGUI _textComponent;
+    private bool _useTextShown = false;
+
     private Dictionary<MovementMode, Sprite> _playerSprites;
 
 	// Use this for initialization
@@ -71,17 +78,24 @@ public class GameUI : MonoBehaviour
         _healthText.text = $"{_player.HitPoints}/{_player.MaxHitPoints}";
         _player.HealthChanged += OnPlayerHealthChanged;
         _player.Deadened += OnPlayerDeath;
+        _player.GetComponent<Interactor>().InteractionTargetChanged += OnInteractionTargetChanged;
 
         _ammoCount.text = _attackBehaviour.Ammo.ToString();
         _ammoCount.CrossFadeAlpha(_attackBehaviour.IsUsingCrossbow ? 1 : 0, 0, true);
         _attackBehaviour.AmmoChanged += OnAmmoChanged;
         _attackBehaviour.WeaponSwapped += OnWeaponSwapped;
+
+        _useText.transform.localScale = Vector3.zero;
+        _textComponent = _useText.GetComponentInChildren<TextMeshProUGUI>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        var useTargetScale = (_useTextShown ? new Vector3(1, 1, 1) : Vector3.zero);
 
+        _useText.transform.localScale =
+            Vector3.Lerp(_useText.transform.localScale, useTargetScale, Time.deltaTime * 12f);
     }
 
     private void OnWeaponSwapped(bool isCrossbow)
@@ -117,6 +131,19 @@ public class GameUI : MonoBehaviour
     private void OnMovementModeChange(MovementMode mode)
     {
         _playerAvatar.sprite = _playerSprites[mode];
+    }
+
+    private void OnInteractionTargetChanged(InteractionTarget target)
+    {
+        if (target == null)
+        {
+            _useTextShown = false;
+        }
+        else
+        {
+            _textComponent.SetText($"(E) " + target.ActionDisplay);
+            _useTextShown = true;
+        }
     }
 
     private void ShowAmmo()

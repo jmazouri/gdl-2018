@@ -36,6 +36,12 @@ namespace AI
                 arrayY = 0;
                 arrayX++;
             }
+
+            //Disable the AI tilemap renderer, if any
+            if (_navMap.GetComponent<TilemapRenderer>() != null)
+            {
+                _navMap.GetComponent<TilemapRenderer>().enabled = false;
+            }
         }
 
         public void ResolvePath(Vector3 realWorldPosition, Vector3 realWorldTarget,
