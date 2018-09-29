@@ -21,6 +21,17 @@ namespace AI
 			_sight = GetComponent<SightBehaviour>();
 			_sight.PlayerSeen += OnPlayerSeen;
 			_aiController.IsDoneChasing += OnDoneChasing;
+			_aiController.Deadened += OnDeath;
+		}
+
+		private void OnDeath()
+		{
+			_sight.enabled = false;
+			_aiController.enabled = false;
+			if (_investigateRoutine != null)
+			{
+				StopCoroutine(_investigateRoutine);
+			}
 		}
 
 		private void OnDoneChasing(object sender, EventArgs e)
@@ -55,7 +66,7 @@ namespace AI
 
 		public void ReceiveAudio(float strength, Vector3 sourcePosition)
 		{
-			if (strength < _detectionStrength) return;
+			if (strength < _detectionStrength || _aiController.CurrentState == AIState.Dead) return;
 			_sight.LastSeen = sourcePosition;
 			if (_investigateRoutine != null)
 			{

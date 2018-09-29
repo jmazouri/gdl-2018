@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using Enums;
 using Generic;
 using UnityEngine;
@@ -29,6 +28,8 @@ namespace AI
 
         void Update()
         {
+            if (CurrentState == AIState.Dead) return;
+            
             if (Route == null || Route.Count == 0)
             {
                 return;
@@ -116,7 +117,18 @@ namespace AI
             if (_patrolRoute.Length > 0)
             {
                 AssignDestination(_patrolRoute[_index].position);
+                CurrentState = AIState.Patrolling;
             }
+            else
+            {
+                CurrentState = AIState.Idle;
+            }
+        }
+
+        public override void Die()
+        {
+            base.Die();
+            CurrentState = AIState.Dead;
         }
     }
 }

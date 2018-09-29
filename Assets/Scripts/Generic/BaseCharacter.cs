@@ -61,7 +61,7 @@ namespace Generic
         {
             Debug.Log($"{gameObject.name}: Dying!");
             Deadened?.Invoke();
-            Destroy(gameObject);
+            //Destroy(gameObject);
         }
     }
 }
