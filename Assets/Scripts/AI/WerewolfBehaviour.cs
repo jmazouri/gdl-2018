@@ -15,12 +15,13 @@ namespace AI
 		}
 		
 		
+		
+		
 		public void ReceiveAudio(float strength)
 		{
 			if (strength < _detectionStrength) return;
 			
 			throw new NotImplementedException();
-
 		}
 	}
 }

@@ -12,7 +12,7 @@ namespace AI
         [SerializeField] private Tilemap _navMap;
         private Vector3?[,] _pseudoGrid;
 
-        void Start()
+        void Awake()
         {
             var bounds = _navMap.cellBounds;
             _pseudoGrid = new Vector3?[bounds.size.x, bounds.size.y];
