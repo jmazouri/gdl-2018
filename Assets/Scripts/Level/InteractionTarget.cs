@@ -20,13 +20,13 @@ public class InteractionTarget : MonoBehaviour
 	// Use this for initialization
 	void Start ()
     {
-		
+        InternalStart();
 	}
 	
 	// Update is called once per frame
 	void Update ()
     {
-		
+        InternalUpdate();
 	}
 
     //Implement this in components that extend InteractionTarget
@@ -34,4 +34,7 @@ public class InteractionTarget : MonoBehaviour
     {
         Debug.Log("Someone interacted with me! :DDD", gameObject);
     }
+
+    public virtual void InternalUpdate() { }
+    public virtual void InternalStart() { }
 }

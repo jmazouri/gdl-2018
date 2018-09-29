@@ -18,7 +18,7 @@ public class CameraFollower : MonoBehaviour
 	// Use this for initialization
 	void Start ()
     {
-        followTarget = FindObjectOfType<PlayerMovement>().transform;
+        followTarget = FindObjectOfType<PlayerController>().transform;
 	}
 	
 	// Update is called once per frame

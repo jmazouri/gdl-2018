@@ -11,18 +11,6 @@ namespace Generic
         /// </summary>
         public float HitPoints => _hitPoints;
 
-        // Use this for initialization
-        void Start () {
-		
-        }
-	
-        // Update is called once per frame
-        void Update () {
-            //TODO: Remove when not needing this for testing anymore
-            if (Input.GetKeyDown(KeyCode.UpArrow)) Heal(1f);
-            if (Input.GetKeyDown(KeyCode.DownArrow)) TakeDamage(1f);
-        }
-
         /// <summary>
         /// Lets the character take damage and decide if it needs to die
         /// </summary>
