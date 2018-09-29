@@ -22,7 +22,7 @@ public class Interactor : MonoBehaviour
     {
         var hit = Physics2D.CircleCast(transform.position, interactionRange,
                 Vector2.zero, Mathf.Infinity, interactables);
-
+        
         currentTarget = hit.collider?.GetComponent<InteractionTarget>();
 
         if (currentTarget != lastTarget && currentTarget != null)

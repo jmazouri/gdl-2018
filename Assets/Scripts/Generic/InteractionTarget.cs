@@ -8,7 +8,8 @@ public class InteractionTarget : MonoBehaviour
     [SerializeField]
     private string ActionName;
 
-    public string ActionDisplay
+    //Implement this to override the action display name
+    public virtual string ActionDisplay
     {
         get
         {
