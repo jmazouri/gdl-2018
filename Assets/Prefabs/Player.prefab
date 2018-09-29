@@ -39,6 +39,7 @@ GameObject:
   - component: {fileID: 50113282781395286}
   - component: {fileID: 114701734829291452}
   - component: {fileID: 58742419920318224}
+  - component: {fileID: 114920158505169034}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -119,6 +120,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbc1ce02e9510d94883f55fb5d84871a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _maxHitPoints: 10
   _hitPoints: 10
   _movementConfig: {fileID: 11400000, guid: 2d6128b6d0be1e44cb411981caffd2cb, type: 2}
   _rigidbody: {fileID: 50113282781395286}
@@ -137,6 +139,20 @@ MonoBehaviour:
   interactables:
     serializedVersion: 2
     m_Bits: 256
+--- !u!114 &114920158505169034
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1875509214915560}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eae83956b8c551d4cb166091e1ffb8bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _arrowPrefab: {fileID: 1627121919792342, guid: 8a3cf3f45755a6844aee0872dd66fee7,
+    type: 2}
+  _ammo: 10
 --- !u!212 &212217659538445272
 SpriteRenderer:
   m_ObjectHideFlags: 1
