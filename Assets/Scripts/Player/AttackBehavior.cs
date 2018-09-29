@@ -49,7 +49,7 @@ namespace Player
             else if (!_isUsingCrossbow)
             {
                 Debug.DrawRay(transform.position, transform.right, Color.grey, 1);
-                var hit = Physics2D.Raycast(transform.position, transform.right, 2f);
+                var hit = Physics2D.Raycast(transform.position, transform.right, 2f, LayerMask.GetMask("Enemy"));
                 var character = hit.transform.gameObject.GetComponent<BaseCharacter>();
 
                 if (character != null)
