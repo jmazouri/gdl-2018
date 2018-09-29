@@ -15,6 +15,7 @@ namespace Player
         private MovementMode _movementMode = MovementMode.Walk;
 
         private Vector2 _velocity;
+        private Vector2 _axisInput;
 
         // Use this for initialization
         void Start()
@@ -41,23 +42,25 @@ namespace Player
                 Debug.Log($"{gameObject.name}: Changed to running!");
                 _movementMode = MovementMode.Run;
             }
+
+            _axisInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
         }
 
         void FixedUpdate()
         {
-            _velocity.x = VelocityForAxis("Horizontal", _velocity.x);
-            _velocity.y = VelocityForAxis("Vertical", _velocity.y);
+            _velocity.x = VelocityForAxis(_axisInput.x, _velocity.x);
+            _velocity.y = VelocityForAxis(_axisInput.y, _velocity.y);
 
             _rigidbody.velocity = _velocity;
 
             MakeNoise();
         }
 
-        private float VelocityForAxis(string axis, float currentVelocity)
+        private float VelocityForAxis(float direction, float currentVelocity)
         {
             var currentSetting = _movementConfig.GetMovementSetting(_movementMode);
 
-            var movement = Input.GetAxisRaw(axis) * currentSetting.Acceleration;
+            var movement = direction * currentSetting.Acceleration;
 
             currentVelocity = Mathf.Clamp(currentVelocity + movement, -currentSetting.MaxSpeed, currentSetting.MaxSpeed);
 
