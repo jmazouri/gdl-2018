@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Player
 {
-    public class PlayerMovement : BaseCharacter
+    public class PlayerController : BaseCharacter
     {
         [SerializeField] private MovementConfig _movementConfig;
 
