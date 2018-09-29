@@ -90,7 +90,7 @@ namespace Player
             {
                 var enemy = hit.collider.gameObject.GetComponent<IAIInteractor>();
 
-                enemy?.ReceiveAudio(hit.distance / currentSetting.NoiseLevel);
+                enemy?.ReceiveAudio(hit.distance / currentSetting.NoiseLevel, transform.position);
             }
         }
     }

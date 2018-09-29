@@ -36,7 +36,7 @@ namespace AI
             }
         }
 
-        public IEnumerator ResolvePath(Vector3 realWorldPosition, Vector3 realWorldTarget,
+        public void ResolvePath(Vector3 realWorldPosition, Vector3 realWorldTarget,
             BaseAIController requestingController)
         {
             var open = new List<NavNode>();
@@ -82,7 +82,7 @@ namespace AI
                         }
                     }
                 }
-                yield return null;
+                //yield return null;
             }
 
             if (!routeFound)
@@ -96,11 +96,11 @@ namespace AI
             ResolveParentChain(destinationNode, realWorldPositions);
             realWorldPositions.Reverse();
             requestingController.Route = realWorldPositions;
-            Debug.Log("WORLD ROUTE:");
-            foreach (var worldPosition in realWorldPositions)
-            {
-                Debug.Log(worldPosition);
-            }
+//            Debug.Log("WORLD ROUTE:");
+//            foreach (var worldPosition in realWorldPositions)
+//            {
+//                Debug.Log(worldPosition);
+//            }
         }
 
         private void ResolveParentChain(NavNode destinationNode, List<Vector3> realWorldPositions)
@@ -140,6 +140,17 @@ namespace AI
                 for (int y = 0; y < _pseudoGrid.GetLength(1); y++)
                 {
                     if (_pseudoGrid[x, y].HasValue && Vector3.Distance(_pseudoGrid[x, y].Value, realWorldPosition) < 0.5f)
+                    {
+                        return new Vector2Int(x, y);
+                    }
+                }
+            }
+            
+            for (int x = 0; x < _pseudoGrid.GetLength(0); x++)
+            {
+                for (int y = 0; y < _pseudoGrid.GetLength(1); y++)
+                {
+                    if (_pseudoGrid[x, y].HasValue && Vector3.Distance(_pseudoGrid[x, y].Value, realWorldPosition) < 1)
                     {
                         return new Vector2Int(x, y);
                     }
