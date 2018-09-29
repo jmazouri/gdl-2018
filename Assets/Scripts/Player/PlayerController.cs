@@ -58,6 +58,9 @@ namespace Player
             _velocity.y = VelocityForAxis(_axisInput.y, _velocity.y);
 
             _rigidbody.velocity = _velocity;
+            var angle = Mathf.Atan2(_velocity.normalized.y, _velocity.normalized.x) * Mathf.Rad2Deg;
+            transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+            Debug.DrawRay(transform.position, _velocity.normalized, Color.blue, 1);
 
             MakeNoise();
         }
