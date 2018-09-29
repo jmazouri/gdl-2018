@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using Enums;
 using Generic;
 using UnityEngine;
@@ -17,12 +19,12 @@ namespace AI
         public List<Vector3> Route { get; set; }
         public AIState CurrentState { get; set; }
 
+        public event EventHandler IsDoneChasing;
+
         void Start()
         {
-            if (_patrolRoute.Length > 0)
-            {
-                AssignDestination(_patrolRoute[_index].position);
-            }
+            StartPatrol();
+
         }
 
         void Update()
@@ -35,6 +37,12 @@ namespace AI
             if (Vector3.Distance(Route.First(), transform.position) <= 0.1f)
             {
                 Route.Remove(Route.First());
+                if (CurrentState == AIState.Chasing && Route.Count == 0)
+                {
+                    CurrentState = AIState.Idle;
+                    IsDoneChasing?.Invoke(this, EventArgs.Empty);
+                    return;
+                }
                 if (CurrentState == AIState.Patrolling && (Route == null || Route.Count == 0))
                 {
                     _index++;
@@ -45,9 +53,11 @@ namespace AI
                     AssignDestination(_patrolRoute[_index].position);
                     return; //todo: jank
                 }
+                
 
                 if (Route == null || Route.Count == 0)
                 {
+                    CurrentState = AIState.Idle;
                     return; //todo: jank
                 }
             }
@@ -80,6 +90,33 @@ namespace AI
 
             Route = null;
             _navController.ResolvePath(transform.position, destination, this);
+        }
+
+        public List<Vector2Int> GetNodePerimeter(Vector3 location)
+        {
+            var adjacentPoints = _navController.GetAdjacentNodePoints(_navController.GetPseudoPosition(location).Value)
+                .Where(x => _navController.PseudoGrid[x.x, x.y].HasValue).ToList();
+            var pointsSet = adjacentPoints.SelectMany(x => _navController.GetAdjacentNodePoints(x)).Where(x => _navController.PseudoGrid[x.x, x.y].HasValue).ToList();
+            pointsSet = pointsSet.Except(adjacentPoints).Distinct().ToList();
+            return pointsSet;
+        }
+
+        public Vector2Int GetPseudoPosition(Vector3 location)
+        {
+            return _navController.GetPseudoPosition(location).Value;
+        }
+
+        public Vector3 GetRealWorldPosition(Vector2Int pseudoLocation)
+        {
+            return _navController.PseudoGrid[pseudoLocation.x, pseudoLocation.y].Value;
+        }
+
+        public void StartPatrol()
+        {
+            if (_patrolRoute.Length > 0)
+            {
+                AssignDestination(_patrolRoute[_index].position);
+            }
         }
     }
 }

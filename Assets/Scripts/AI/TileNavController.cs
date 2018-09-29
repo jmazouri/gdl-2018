@@ -12,6 +12,8 @@ namespace AI
         [SerializeField] private Tilemap _navMap;
         private Vector3?[,] _pseudoGrid;
 
+        public Vector3?[,] PseudoGrid => _pseudoGrid;
+
         void Awake()
         {
             var bounds = _navMap.cellBounds;
@@ -27,7 +29,7 @@ namespace AI
                     Vector3 worldPosition = _navMap.GetCellCenterWorld(localPlace);
                     if (_navMap.HasTile(localPlace))
                     {
-                        _pseudoGrid[arrayX, arrayY] = worldPosition;
+                        PseudoGrid[arrayX, arrayY] = worldPosition;
                     }
                     arrayY++;
                 }
@@ -69,13 +71,13 @@ namespace AI
                 foreach (var point in adjacentNodePoints)
                 {
                     if (closed.Any(x => x.PseudoPosition == point)) continue;
-                    if (_pseudoGrid[point.x, point.y].HasValue && open.All(x => x.PseudoPosition != point))
+                    if (PseudoGrid[point.x, point.y].HasValue && open.All(x => x.PseudoPosition != point))
                     {
-                        open.Add(new NavNode(point, _pseudoGrid[point.x, point.y].Value, pseudoTarget.Value, node));
+                        open.Add(new NavNode(point, PseudoGrid[point.x, point.y].Value, pseudoTarget.Value, node));
                     }
-                    else if (_pseudoGrid[point.x, point.y].HasValue)
+                    else if (PseudoGrid[point.x, point.y].HasValue)
                     {
-                        var testNode = new NavNode(point, _pseudoGrid[point.x, point.y].Value, pseudoTarget.Value, node);
+                        var testNode = new NavNode(point, PseudoGrid[point.x, point.y].Value, pseudoTarget.Value, node);
                         if (testNode.FinalScore < open.First(x => x.PseudoPosition == point).FinalScore)
                         {
                             open.First(x => x.PseudoPosition == point).Parent = node;
@@ -113,7 +115,7 @@ namespace AI
             }
         }
 
-        private List<Vector2Int> GetAdjacentNodePoints(Vector2Int point)
+        public List<Vector2Int> GetAdjacentNodePoints(Vector2Int point)
         {
             var returnList = new List<Vector2Int>();
             for (int xIndex = point.x - 1; xIndex <= point.x + 1; xIndex++)
@@ -123,7 +125,7 @@ namespace AI
                     var adjacentVector = new Vector2Int(xIndex, yIndex);
                     if (adjacentVector == point) continue;
                     
-                    if (adjacentVector.x > -1 && adjacentVector.y > -1 && adjacentVector.x != _pseudoGrid.GetLength(0) && adjacentVector.y != _pseudoGrid.GetLength(1))
+                    if (adjacentVector.x > -1 && adjacentVector.y > -1 && adjacentVector.x != PseudoGrid.GetLength(0) && adjacentVector.y != PseudoGrid.GetLength(1))
                     {
                         returnList.Add(adjacentVector);
                     }
@@ -135,22 +137,22 @@ namespace AI
 
         public Vector2Int? GetPseudoPosition(Vector3 realWorldPosition)
         {
-            for (int x = 0; x < _pseudoGrid.GetLength(0); x++)
+            for (int x = 0; x < PseudoGrid.GetLength(0); x++)
             {
-                for (int y = 0; y < _pseudoGrid.GetLength(1); y++)
+                for (int y = 0; y < PseudoGrid.GetLength(1); y++)
                 {
-                    if (_pseudoGrid[x, y].HasValue && Vector3.Distance(_pseudoGrid[x, y].Value, realWorldPosition) < 0.5f)
+                    if (PseudoGrid[x, y].HasValue && Vector3.Distance(PseudoGrid[x, y].Value, realWorldPosition) < 0.5f)
                     {
                         return new Vector2Int(x, y);
                     }
                 }
             }
             
-            for (int x = 0; x < _pseudoGrid.GetLength(0); x++)
+            for (int x = 0; x < PseudoGrid.GetLength(0); x++)
             {
-                for (int y = 0; y < _pseudoGrid.GetLength(1); y++)
+                for (int y = 0; y < PseudoGrid.GetLength(1); y++)
                 {
-                    if (_pseudoGrid[x, y].HasValue && Vector3.Distance(_pseudoGrid[x, y].Value, realWorldPosition) < 1)
+                    if (PseudoGrid[x, y].HasValue && Vector3.Distance(PseudoGrid[x, y].Value, realWorldPosition) < 1)
                     {
                         return new Vector2Int(x, y);
                     }
