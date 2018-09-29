@@ -573,9 +573,9 @@ MonoBehaviour:
   _hitPoints: 10
   _navController: {fileID: 1142250119}
   _patrolRoute: []
-  _patrolSpeed: 2
-  _investigationSpeed: 5
-  _chaseSpeed: 10
+  _patrolSpeed: 1
+  _investigationSpeed: 1.5
+  _chaseSpeed: 2.5
   _damage: 1
 --- !u!212 &1838307324
 SpriteRenderer:
@@ -1215,7 +1215,7 @@ Prefab:
     - target: {fileID: 3664157344797129168, guid: 98cc6fb4903436f479b1bad589ce934a,
         type: 2}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3664157344797129168, guid: 98cc6fb4903436f479b1bad589ce934a,
         type: 2}

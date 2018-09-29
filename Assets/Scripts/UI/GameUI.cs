@@ -85,14 +85,14 @@ public class GameUI : MonoBehaviour
         _attackBehaviour.AmmoChanged += OnAmmoChanged;
         _attackBehaviour.WeaponSwapped += OnWeaponSwapped;
 
-        _useText.transform.localScale = Vector3.zero;
+        _useText.transform.localScale = new Vector3(0.001f, 0.001f, 0.001f);
         _textComponent = _useText.GetComponentInChildren<TextMeshProUGUI>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        var useTargetScale = (_useTextShown ? new Vector3(1, 1, 1) : Vector3.zero);
+        var useTargetScale = (_useTextShown ? new Vector3(1, 1, 1) : new Vector3(0.001f, 0.001f, 0.001f));
 
         _useText.transform.localScale =
             Vector3.Lerp(_useText.transform.localScale, useTargetScale, Time.deltaTime * 12f);
