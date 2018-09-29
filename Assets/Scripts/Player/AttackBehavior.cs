@@ -1,4 +1,5 @@
 ﻿using System;
+using Generic;
 using UnityEngine;
 
 namespace Player
@@ -8,6 +9,7 @@ namespace Player
         [SerializeField] private GameObject _arrowPrefab;
         [SerializeField] private int _ammo = 10;
         [SerializeField] private bool _isUsingCrossbow;
+        [SerializeField] private float _meleeDamage = 1f;
 
         public int Ammo => _ammo;
 
@@ -43,6 +45,17 @@ namespace Player
                 Instantiate(_arrowPrefab);
 
                 SpendAmmo(1);
+            }
+            else if (!_isUsingCrossbow)
+            {
+                Debug.DrawRay(transform.position, transform.right, Color.grey, 1);
+                var hit = Physics2D.Raycast(transform.position, transform.right, 2f);
+                var character = hit.transform.gameObject.GetComponent<BaseCharacter>();
+
+                if (character != null)
+                {
+                    character.TakeDamage(_meleeDamage);
+                }
             }
         }
 
