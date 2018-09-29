@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using AI;
+﻿using AI;
 using Enums;
 using Generic;
 using UnityEngine;
@@ -17,6 +16,10 @@ namespace Player
         private Vector2 _velocity;
         private Vector2 _axisInput;
 
+        public delegate void MovementChanged(MovementMode newMovementMode);
+
+        public event MovementChanged MovementModeChanged;
+
         // Use this for initialization
         void Start()
         {
@@ -29,18 +32,21 @@ namespace Player
             {
                 Debug.Log($"{gameObject.name}: Changed to sneaking!");
                 _movementMode = MovementMode.Sneak;
+                MovementModeChanged?.Invoke(_movementMode);
             }
 
             if (Input.GetKeyDown(KeyCode.K))
             {
                 Debug.Log($"{gameObject.name}: Changed to walking!");
                 _movementMode = MovementMode.Walk;
+                MovementModeChanged?.Invoke(_movementMode);
             }
 
             if (Input.GetKeyDown(KeyCode.L))
             {
                 Debug.Log($"{gameObject.name}: Changed to running!");
                 _movementMode = MovementMode.Run;
+                MovementModeChanged?.Invoke(_movementMode);
             }
 
             _axisInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));

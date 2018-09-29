@@ -1,10 +1,23 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Generic
 {
     public class BaseCharacter : MonoBehaviour
     {
+        [SerializeField] private float _maxHitPoints = 10;
         [SerializeField] private float _hitPoints = 10;
+
+        public delegate void HealthChangeHandler(float currentHealth, float change);
+
+        public event HealthChangeHandler HealthChanged;
+        public event Action Deadened;
+
+        /// <summary>
+        /// Maximum amount of hit points for the character
+        /// </summary>
+        public float MaxHitPoints => _maxHitPoints;
+
         /// <summary>
         /// The hitpoints of the character.
         /// Readonly, if you want to adjust the HP use TakeDamage(float) or Heal(float)
@@ -35,8 +48,10 @@ namespace Generic
         {
             _hitPoints += damage;
 
+            if (_hitPoints > _maxHitPoints) _hitPoints = _maxHitPoints;
             if (_hitPoints <= 0.0f) Die();
             else Debug.Log($"{gameObject.name}: Hitpoints {_hitPoints} left");
+            HealthChanged?.Invoke(_hitPoints, damage);
         }
 
         /// <summary>
@@ -45,6 +60,7 @@ namespace Generic
         public virtual void Die()
         {
             Debug.Log($"{gameObject.name}: Dying!");
+            Deadened?.Invoke();
             Destroy(gameObject);
         }
     }
