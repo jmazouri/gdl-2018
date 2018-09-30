@@ -7,7 +7,6 @@ namespace Generic
     {
         [SerializeField] private float _speed;
         [SerializeField] private Rigidbody2D _rigidbody;
-        [SerializeField] private BoxCollider2D _collider;
 
         // Use this for initialization
         void Start()
@@ -22,11 +21,12 @@ namespace Generic
             _rigidbody.velocity = velocity;
         }
 
-        void OnTriggerEnter2D(Collider2D other)
+        void OnTriggerEnter2D(Collider2D collision)
         {
-            if (!other.IsTouchingLayers(LayerMask.GetMask("Obstacle", "Enemy"))) return;
+            // Magic numbers are bad but can't figure out how to solve this otherwise.
+            if (collision.gameObject.layer != 9 && collision.gameObject.layer != 10) return;
 
-            var wolf = other.GetComponent<BaseAIController>();
+            var wolf = collision.gameObject.GetComponent<BaseAIController>();
             if (wolf != null)
             {
                 wolf.TakeDamage(1);
