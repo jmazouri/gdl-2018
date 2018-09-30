@@ -11,6 +11,8 @@ namespace Player
 
         [SerializeField] private Rigidbody2D _rigidbody;
 
+        [SerializeField] private Animator _animator;
+
         private MovementMode _movementMode = MovementMode.Walk;
 
         private Vector2 _velocity;
@@ -58,6 +60,7 @@ namespace Player
             _velocity.y = VelocityForAxis(_axisInput.y, _velocity.y);
 
             _rigidbody.velocity = _velocity;
+            _animator.SetFloat("Velocity", _velocity.magnitude);
 
             if (_velocity != Vector2.zero)
             {

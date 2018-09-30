@@ -10,6 +10,7 @@ namespace Player
         [SerializeField] private int _ammo = 10;
         [SerializeField] private bool _isUsingCrossbow;
         [SerializeField] private float _meleeDamage = 1f;
+        [SerializeField] private Animator _animator;
 
         public int Ammo => _ammo;
 
@@ -38,13 +39,14 @@ namespace Player
         {
             if (_isUsingCrossbow && _ammo > 0)
             {
+                _animator.SetBool("IsShooting", true);
                 Debug.DrawRay(transform.position, transform.right, Color.green, 1);
                 Debug.Log("I shot");
                 _arrowPrefab.transform.rotation = transform.rotation;
                 _arrowPrefab.transform.position = transform.position;
                 Instantiate(_arrowPrefab);
 
-                SpendAmmo(1);
+                SpendAmmo(1);                
             }
             else if (!_isUsingCrossbow)
             {
