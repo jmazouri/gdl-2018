@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Linq;
 using Enums;
+using TMPro;
 using UnityEngine;
 
 namespace AI
@@ -16,6 +17,8 @@ namespace AI
 		private BaseAIController _aiController;
 		private SightBehaviour _sight;
 		private Coroutine _investigateRoutine;
+
+        [SerializeField] private AlertEffect _alertEffect;
 
 		void Start()
 		{
@@ -70,12 +73,24 @@ namespace AI
 			_aiController.StartPatrol();
 		}
 
+        private bool _hasSeenPlayer = false;
+
 		private void OnPlayerSeen(object sender, PlayerSeenEventArgs e)
 		{
 			if (_investigateRoutine != null)
 			{
 				StopCoroutine(_investigateRoutine);
 			}
+
+            if (!_hasSeenPlayer)
+            {
+                var alert = Instantiate(_alertEffect);
+                alert.transform.position = transform.position;
+                alert.SetText("!");
+
+                _hasSeenPlayer = true;
+            }
+
 			_aiController.AssignDestination(e.Position, AIState.Chasing);
 		}
 
