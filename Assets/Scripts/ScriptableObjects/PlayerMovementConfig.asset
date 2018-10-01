@@ -15,7 +15,7 @@ MonoBehaviour:
     MaxSpeed: 1
     NoiseLevel: 2
     Acceleration: 0.2
-    Friction: 0.15
+    Friction: 0.1
   _walkSetting:
     MaxSpeed: 2
     NoiseLevel: 5
@@ -24,5 +24,5 @@ MonoBehaviour:
   _runsetting:
     MaxSpeed: 5
     NoiseLevel: 10
-    Acceleration: 0.4
-    Friction: 0.15
+    Acceleration: 0.6
+    Friction: 0.25

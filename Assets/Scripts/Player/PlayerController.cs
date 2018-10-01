@@ -18,6 +18,21 @@ namespace Player
         private Vector2 _velocity;
         private Vector2 _axisInput;
 
+        public MovementMode MovementMode
+        {
+            get
+            {
+                return _movementMode;
+            }
+
+            private set
+            {
+                _movementMode = value;
+                MovementModeChanged?.Invoke(_movementMode);
+                Debug.Log($"{gameObject.name}: Movement mode set to <{_movementMode}>!");
+            }
+        }
+
         public delegate void MovementChanged(MovementMode newMovementMode);
 
         public event MovementChanged MovementModeChanged;
@@ -32,23 +47,17 @@ namespace Player
         {
             if (Input.GetKeyDown(KeyCode.J))
             {
-                Debug.Log($"{gameObject.name}: Changed to sneaking!");
-                _movementMode = MovementMode.Sneak;
-                MovementModeChanged?.Invoke(_movementMode);
+                MovementMode = MovementMode.Sneak;
             }
 
             if (Input.GetKeyDown(KeyCode.K))
             {
-                Debug.Log($"{gameObject.name}: Changed to walking!");
-                _movementMode = MovementMode.Walk;
-                MovementModeChanged?.Invoke(_movementMode);
+                MovementMode = MovementMode.Walk;
             }
 
             if (Input.GetKeyDown(KeyCode.L))
             {
-                Debug.Log($"{gameObject.name}: Changed to running!");
-                _movementMode = MovementMode.Run;
-                MovementModeChanged?.Invoke(_movementMode);
+                MovementMode = MovementMode.Run;
             }
 
             _axisInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
@@ -56,8 +65,9 @@ namespace Player
 
         void FixedUpdate()
         {
-            _velocity.x = VelocityForAxis(_axisInput.x, _velocity.x);
-            _velocity.y = VelocityForAxis(_axisInput.y, _velocity.y);
+            // _velocity.x = VelocityForAxis(_axisInput.x, _velocity.x);
+            // _velocity.y = VelocityForAxis(_axisInput.y, _velocity.y);
+            _velocity = GetNextVelocity(_axisInput, _velocity);
 
             _rigidbody.velocity = _velocity;
             _animator.SetFloat("Velocity", _velocity.magnitude);
@@ -70,6 +80,13 @@ namespace Player
             Debug.DrawRay(transform.position, _velocity.normalized, Color.blue, 1);
 
             MakeNoise();
+        }
+
+        private Vector2 GetNextVelocity(Vector2 input, Vector2 current)
+        {
+            var setting = _movementConfig.GetMovementSetting(_movementMode);
+            var newSpeed = input.normalized * setting.Acceleration + current;
+            return Vector2.ClampMagnitude(newSpeed.magnitude > setting.Friction ? newSpeed - newSpeed.normalized * setting.Friction : Vector2.zero, setting.MaxSpeed);
         }
 
         private float VelocityForAxis(float direction, float currentVelocity)
